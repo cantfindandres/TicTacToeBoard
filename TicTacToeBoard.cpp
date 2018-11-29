@@ -19,7 +19,13 @@ TicTacToeBoard::TicTacToeBoard()
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
-  return Invalid;
+  if(turn == X){
+    turn = O;
+    return O;
+  } else{
+    turn = X;
+    return X;
+  }
 }
 
 /**
@@ -31,25 +37,55 @@ Piece TicTacToeBoard::toggleTurn()
  * is over, no more pieces can be placed so attempting to place a piece
  * should neither change the board nor change whose turn it is.
 **/ 
-Piece TicTacToeBoard::placePiece(int row, int column)
-{
-  return Invalid;
+Piece TicTacToeBoard::placePiece(int row, int column){
+  Piece temp = getPiece(row,column);
+  if(temp == Invalid){
+    return Invalid;
+  }
+  else if(temp == X || temp == O){
+    return temp;
+  }
+  else{
+    board[row][column] = turn;
+    temp = turn;
+    turn = toggleTurn();
+    return temp;
+  }
 }
 
 /**
  * Returns what piece is at the provided coordinates, or Blank if there
  * are no pieces there, or Invalid if the coordinates are out of bounds
 **/
-Piece TicTacToeBoard::getPiece(int row, int column)
-{
-  return Invalid;
+Piece TicTacToeBoard::getPiece(int row, int column){
+  if(row > BOARDSIZE || row < 0 || column > BOARDSIZE || column < 0){               //checks valid input
+    return Invalid;
+  }
+  else{
+    return board[row][column];
+  }
 }
 
 /**
  * Returns which Piece has won, if there is a winner, Invalid if the game
  * is not over, or Blank if the board is filled and no one has won.
 **/
-Piece TicTacToeBoard::getWinner()
-{
-  return Invalid;
+Piece TicTacToeBoard::getWinner(){
+  /*
+  Piece temp = board[BOARDSIZE/2][BOARDSIZE/2];
+  bool piecechanged;
+  
+  for(unsigned int i = 0; i < BOARDSIZE; i++){
+    
+  }
+  // check for not_over conditiion
+  for(unsigned int i = 0; i < BOARDSIZE; i++){
+    for(unsigned int j = 0; j < BOARDSIZE; j++){
+      if(getPiece(i,j) == Blank){
+        return Invalid;
+      }
+    }
+  }
+  */
+  return Blank;
 }
