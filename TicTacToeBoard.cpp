@@ -21,11 +21,10 @@ Piece TicTacToeBoard::toggleTurn()
 {
   if(turn == X){
     turn = O;
-    return O;
   } else{
     turn = X;
-    return X;
   }
+  return turn;
 }
 
 /**
@@ -58,7 +57,7 @@ Piece TicTacToeBoard::placePiece(int row, int column){
  * are no pieces there, or Invalid if the coordinates are out of bounds
 **/
 Piece TicTacToeBoard::getPiece(int row, int column){
-  if(row > BOARDSIZE || row < 0 || column > BOARDSIZE || column < 0){               //checks valid input
+  if(row > BOARDSIZE - 1 || row < 0 || column > BOARDSIZE - 1 || column < 0){               //checks valid input
     return Invalid;
   }
   else{
@@ -71,21 +70,65 @@ Piece TicTacToeBoard::getPiece(int row, int column){
  * is not over, or Blank if the board is filled and no one has won.
 **/
 Piece TicTacToeBoard::getWinner(){
-  /*
-  Piece temp = board[BOARDSIZE/2][BOARDSIZE/2];
-  bool piecechanged;
-  
-  for(unsigned int i = 0; i < BOARDSIZE; i++){
-    
-  }
-  // check for not_over conditiion
-  for(unsigned int i = 0; i < BOARDSIZE; i++){
-    for(unsigned int j = 0; j < BOARDSIZE; j++){
-      if(getPiece(i,j) == Blank){
-        return Invalid;
+  Piece to_return;
+  bool winner;
+
+  // checks rows
+  for(unsigned int i = 0; i < BOARDSIZE; i++) {
+    winner = true;
+    to_return = board[i][0];
+    for(unsigned int j = 1; j < BOARDSIZE; j++){
+      if(board[i][j] != to_return || board[i][j] == Blank){
+        winner = false;
+        break;
       }
     }
+    if (winner){
+      return to_return;
+    }
   }
-  */
-  return Blank;
+  
+  // checks columns
+   for(unsigned int i = 0; i < BOARDSIZE; i++) {
+     winner = true;
+     to_return = board[0][i];
+    for(unsigned int j = 1; j < BOARDSIZE; j++){
+      if(board[j][i] != to_return || board[j][i] == Blank){
+        winner = false;
+        break;
+      }
+    }
+    if (winner){
+      return to_return;
+    }
+  }
+  
+  // checks diagonals
+  to_return = board[0][0];
+  winner = true;
+  for(unsigned int i = 0; i < BOARDSIZE - 1; i++){
+    if(board[i][i] != to_return || board[i][i] == Blank){
+      winner = false;
+      break;
+    }
+  }
+  if(winner){
+    return to_return;
+  }
+  
+  
+  to_return = board[BOARDSIZE - 1][0];
+  winner = true;
+  for(int i = BOARDSIZE - 2; i >= 0; i--){
+    if(board[i][i] != to_return || board[i][i] == Blank){
+      winner = false;
+      break;
+    }
+  }
+  if(winner){
+    return to_return;
+  }
+  
+  
+  return to_return;
 }
